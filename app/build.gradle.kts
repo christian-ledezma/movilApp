@@ -1,9 +1,15 @@
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 
     id("io.sentry.android.gradle") version "5.9.0"
+
+    alias(libs.plugins.ktlint)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.google.gms.google.services)
+
 }
 
 android {
@@ -50,6 +56,24 @@ sentry {
     includeSourceContext.set(true)
 }
 
+ktlint {
+    android = true
+    outputColorName = "RED"
+    verbose = true
+    ignoreFailures = true
+    enableExperimentalRules = true
+    baseline = file("$projectDir/config/ktlint/baseline.xml")
+    reporters {
+        reporter(reporterType = ReporterType.PLAIN)
+        reporter(ReporterType.CHECKSTYLE)
+        reporter(ReporterType.SARIF)
+    }
+    filter {
+        exclude("**/generated/**")
+        include("**/kotlin/**")
+    }
+}
+
 
 dependencies {
 
@@ -61,6 +85,10 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.messaging)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -69,6 +97,12 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.retrofit)
+    implementation(libs.converter.gson)
     implementation(libs.glide)
     implementation(libs.sentry)
+    implementation (libs.koin.android)
+    implementation (libs.koin.androidx.navigation)
+    implementation (libs.koin.androidx.compose)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network)
 }
