@@ -13,10 +13,13 @@ import com.example.myapp.features.github.domain.repository.IGithubRepository
 import com.example.myapp.features.github.domain.usecase.FindByNicknameUseCase
 import com.example.myapp.features.github.presentation.GithubViewModel
 import com.example.myapp.features.movie.data.api.MovieService
+import com.example.myapp.features.movie.data.database.MovieDatabase
 import com.example.myapp.features.movie.data.datasource.MovieRemoteDataSource
 import com.example.myapp.features.movie.data.repository.MovieRepository
 import com.example.myapp.features.movie.domain.repository.IMovieRepository
 import com.example.myapp.features.movie.domain.usecase.FetchPopularMoviesUseCase
+import com.example.myapp.features.movie.domain.usecase.GetLikedMoviesUseCase
+import com.example.myapp.features.movie.domain.usecase.ToggleLikeUseCase
 import com.example.myapp.features.movie.presentation.PopularMoviesViewModel
 import com.example.myapp.features.profile.data.ProfileRepository
 import com.example.myapp.features.profile.domain.repository.IProfileRepository
@@ -29,8 +32,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
 import java.util.concurrent.TimeUnit
-
+import com.example.myapp.features.movie.data.repository.LikedMovieRepository
+import com.example.myapp.features.movie.data.repository.LikedMovieRepositoryImpl
 
 object NetworkConstants {
     const val RETROFIT_GITHUB = "RetrofitGithub"
@@ -65,37 +70,65 @@ val appModule = module {
             .build()
     }
 
-
+    // ===== GITHUB =====
     single<GithubService> {
-        get<Retrofit>( named(NetworkConstants.RETROFIT_GITHUB)).create(GithubService::class.java)
+        get<Retrofit>(named(NetworkConstants.RETROFIT_GITHUB)).create(GithubService::class.java)
     }
-    single{ GithubRemoteDataSource(get()) }
-    single<IGithubRepository>{ GithubRepository(get()) }
-
+    single { GithubRemoteDataSource(get()) }
+    single<IGithubRepository> { GithubRepository(get()) }
     factory { FindByNicknameUseCase(get()) }
     viewModel { GithubViewModel(get()) }
 
-
-
+    // ===== DOLLAR =====
     single { RealTimeRemoteDataSource() }
-    single<IDollarRepository>{ DollarRepository(get()) }
+    single<IDollarRepository> { DollarRepository(get()) }
     factory { CambioTipoDollarUseCase(get()) }
-    viewModel{ DollarViewModel(get()) }
+    viewModel { DollarViewModel(get()) }
 
-
+    // ===== MOVIES =====
+    // API Key
     single(named("apiKey")) {
         androidApplication().getString(R.string.api_key)
     }
+
+    // Network
     single<MovieService> {
         get<Retrofit>(named(NetworkConstants.RETROFIT_MOVIE)).create(MovieService::class.java)
     }
     single { MovieRemoteDataSource(get(), get(named("apiKey"))) }
-    single<IMovieRepository> { MovieRepository(get()) }
-    factory { FetchPopularMoviesUseCase(get()) }
-    viewModel{ PopularMoviesViewModel(get()) }
 
+    // Remote Repository (para películas populares)
+    single<IMovieRepository> { MovieRepository(get()) }
+
+    // Room Database (para likes)
+    single {
+        MovieDatabase.getDatabase(androidContext())
+    }
+    single {
+        get<MovieDatabase>().likedMovieDao()
+    }
+
+    // Local Repository (para likes)
+    single<LikedMovieRepository> {
+        LikedMovieRepositoryImpl(get())
+    }
+
+    // Use Cases
+    factory { FetchPopularMoviesUseCase(get()) }
+    factory { ToggleLikeUseCase(get()) }
+    factory { GetLikedMoviesUseCase(get()) }
+
+    // ViewModel
+    viewModel {
+        PopularMoviesViewModel(
+            fetchPopularMovies = get(),
+            toggleLikeUseCase = get(),
+            getLikedMoviesUseCase = get()
+        )
+    }
+
+    // ===== PROFILE =====
     single<IProfileRepository> { ProfileRepository() }
     factory { GetProfileUseCase(get()) }
     viewModel { ProfileViewModel(get()) }
-
 }

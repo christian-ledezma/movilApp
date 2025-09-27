@@ -31,10 +31,10 @@ import coil3.compose.AsyncImage
 import com.example.myapp.features.movie.domain.model.MovieModel
 
 @Composable
-fun PopularMoviesView (
+fun PopularMoviesView(
     movies: List<MovieModel>,
-    likedMovies: Set<Int>,
-    onLikeClick: (Int) -> Unit
+    likedMovies: Set<String>,
+    onLikeClick: (String) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -42,11 +42,12 @@ fun PopularMoviesView (
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(16.dp)
     ) {
-        items(movies.size) {
+        items(movies.size) { index ->
+            val movie = movies[index]
             CardMovie(
-                movie = movies[it],
-                isLiked = likedMovies.contains(it),
-                onLikeClick = { onLikeClick(it) }
+                movie = movie,
+                isLiked = likedMovies.contains(movie.title),
+                onLikeClick = { onLikeClick(movie.title) }
             )
         }
     }

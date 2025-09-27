@@ -12,7 +12,6 @@ fun PopularMoviesScreen (
     popularMoviesViewModel: PopularMoviesViewModel = koinViewModel()
 ){
     val state = popularMoviesViewModel.state.collectAsState()
-    val likedMovies = popularMoviesViewModel.likedMovies.collectAsState()
 
     LaunchedEffect(Unit) {
         popularMoviesViewModel.fetchPopularMovies()
@@ -27,9 +26,9 @@ fun PopularMoviesScreen (
         is PopularMoviesViewModel.UiState.Success ->
             PopularMoviesView(
                 movies = s.movies,
-                likedMovies = likedMovies.value,
-                onLikeClick = { movieId ->
-                    popularMoviesViewModel.toggleLike(movieId)
+                likedMovies = s.likedMovies,
+                onLikeClick = { movieTitle: String ->
+                    popularMoviesViewModel.toggleLike(movieTitle)
                 }
             )
 
