@@ -27,6 +27,10 @@ class PopularMoviesViewModel(
     private val _state = MutableStateFlow<UiState>(UiState.Loading)
     val state: StateFlow<UiState> = _state.asStateFlow()
 
+    private val _likedMovies = MutableStateFlow<Set<Int>>(emptySet())
+    val likedMovies: StateFlow<Set<Int>> = _likedMovies.asStateFlow()
+
+
     init {
         Log.d(TAG, "ViewModel inicializado")
         fetchPopularMovies()
@@ -50,5 +54,17 @@ class PopularMoviesViewModel(
                 }
             )
         }
+    }
+
+    fun toggleLike(movieId: Int) {
+        val currentLikes = _likedMovies.value.toMutableSet()
+        if (currentLikes.contains(movieId)) {
+            currentLikes.remove(movieId)
+            Log.d(TAG, "Like removido para película ID: $movieId")
+        } else {
+            currentLikes.add(movieId)
+            Log.d(TAG, "Like agregado para película ID: $movieId")
+        }
+        _likedMovies.value = currentLikes
     }
 }
