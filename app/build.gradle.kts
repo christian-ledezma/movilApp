@@ -107,4 +107,7 @@ dependencies {
     implementation (libs.koin.androidx.compose)
     implementation(libs.coil.compose)
     implementation(libs.coil.network)
+
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
