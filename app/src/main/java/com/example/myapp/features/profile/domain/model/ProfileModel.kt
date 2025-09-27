@@ -1,9 +1,9 @@
 package com.example.myapp.features.profile.domain.model
 
 data class ProfileModel (
-    val pathUrl: String,
-    val name: String,
-    val email: String,
-    val cellphone: String,
-    val summary: String
+    val pathUrl: UrlPath,
+    val name: ProfileName,
+    val email: Email,
+    val cellphone: Cellphone,
+    val summary: Summary
 )

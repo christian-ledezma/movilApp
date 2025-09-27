@@ -46,7 +46,7 @@ fun ProfileScreen (
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 AsyncImage(
-                    model = st.profile.pathUrl,
+                    model = st.profile.pathUrl.value,
                     contentDescription = "Foto de perfil de ${st.profile.name}",
                     modifier = Modifier
                         .size(120.dp)
@@ -56,22 +56,22 @@ fun ProfileScreen (
                 )
 
                 Text(
-                    text = st.profile.name,
+                    text = st.profile.name.value,
                     style = MaterialTheme.typography.titleMedium
                 )
 
                 Text(
-                    text = st.profile.email,
+                    text = st.profile.email.value,
                     style = MaterialTheme.typography.bodyMedium
                 )
 
                 Text(
-                    text = st.profile.cellphone,
+                    text = st.profile.cellphone.value,
                     style = MaterialTheme.typography.bodyMedium
                 )
 
                 Text(
-                    text = st.profile.summary,
+                    text = st.profile.summary.value,
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(top = 8.dp),
                     textAlign = TextAlign.Center
