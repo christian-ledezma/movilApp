@@ -5,6 +5,7 @@ import com.example.myapp.features.dollar.data.Respository.DollarRepository
 import com.example.myapp.features.dollar.datasource.RealTimeRemoteDataSource
 import com.example.myapp.features.dollar.domain.repository.IDollarRepository
 import com.example.myapp.features.dollar.domain.usecase.CambioTipoDollarUseCase
+import com.example.myapp.features.dollar.domain.usecase.UpdateDollarRatesUseCase
 import com.example.myapp.features.dollar.presentation.DollarViewModel
 import com.example.myapp.features.github.data.api.GithubService
 import com.example.myapp.features.github.data.datasource.GithubRemoteDataSource
@@ -80,7 +81,8 @@ val appModule = module {
     single { RealTimeRemoteDataSource() }
     single<IDollarRepository>{ DollarRepository(get()) }
     factory { CambioTipoDollarUseCase(get()) }
-    viewModel{ DollarViewModel(get()) }
+    single { UpdateDollarRatesUseCase(get()) }
+    viewModel{ DollarViewModel(get(), get()) }
 
 
     single(named("apiKey")) {

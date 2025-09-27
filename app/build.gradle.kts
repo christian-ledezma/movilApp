@@ -10,6 +10,8 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.google.gms.google.services)
 
+    alias(libs.plugins.ksp)
+
 }
 
 android {
@@ -106,4 +108,10 @@ dependencies {
     implementation (libs.koin.androidx.compose)
     implementation(libs.coil.compose)
     implementation(libs.coil.network)
+
+    implementation(libs.bundles.local)
+    annotationProcessor(libs.room.compiler)
+    ksp(libs.room.compiler)
+    testImplementation(libs.room.testing)
+
 }

@@ -12,4 +12,13 @@ class DollarRepository(val realTimeRemoteDataSource: RealTimeRemoteDataSource) :
 
         return realTimeRemoteDataSource.getDollarUpdates()
     }
+
+    override suspend fun updateDollarRates(
+        oficial: String?,
+        paralelo: String?,
+        usdt: String?,
+        usdc: String?
+    ): Result<Unit> {
+        return realTimeRemoteDataSource.updateDollarRates(oficial, paralelo, usdt, usdc)
+    }
 }
