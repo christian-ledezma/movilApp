@@ -12,4 +12,5 @@ class DollarRepository(val realTimeRemoteDataSource: RealTimeRemoteDataSource) :
 
         return realTimeRemoteDataSource.getDollarUpdates()
     }
+
 }

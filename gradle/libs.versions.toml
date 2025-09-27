@@ -24,6 +24,7 @@ googleGmsGoogleServices = "4.4.3"
 firebaseDatabase = "22.0.0"
 firebaseMessaging = "25.0.1"
 material3 = "1.3.2"
+playServicesTfliteSupport = "16.4.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -54,6 +55,7 @@ coil-network = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = 
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+play-services-tflite-support = { group = "com.google.android.gms", name = "play-services-tflite-support", version.ref = "playServicesTfliteSupport" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
