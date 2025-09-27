@@ -18,6 +18,10 @@ import com.example.myapp.features.movie.data.repository.MovieRepository
 import com.example.myapp.features.movie.domain.repository.IMovieRepository
 import com.example.myapp.features.movie.domain.usecase.FetchPopularMoviesUseCase
 import com.example.myapp.features.movie.presentation.PopularMoviesViewModel
+import com.example.myapp.features.profile.data.ProfileRepository
+import com.example.myapp.features.profile.domain.repository.IProfileRepository
+import com.example.myapp.features.profile.domain.usecase.GetProfileUseCase
+import com.example.myapp.features.profile.presentation.ProfileViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -89,5 +93,9 @@ val appModule = module {
     single<IMovieRepository> { MovieRepository(get()) }
     factory { FetchPopularMoviesUseCase(get()) }
     viewModel{ PopularMoviesViewModel(get()) }
+
+    single<IProfileRepository> { ProfileRepository() }
+    factory { GetProfileUseCase(get()) }
+    viewModel { ProfileViewModel(get()) }
 
 }

@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.myapp.features.dollar.presentation.DollarScreen
 import com.example.myapp.features.github.presentation.GithubScreen
 import com.example.myapp.features.movie.presentation.PopularMoviesScreen
+import com.example.myapp.features.profile.presentation.ProfileScreen
 
 @Composable
 fun AppNavigation() {
@@ -18,13 +19,13 @@ fun AppNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.PopularMovies.route
+        startDestination = Screen.Profile.route
     ) {
         composable(Screen.Github.route){
             GithubScreen(modifier = Modifier)
         }
-        composable(Screen.Home.route){
-
+        composable(Screen.Profile.route){
+            ProfileScreen()
         }
        composable (Screen.Dollar.route ){
            DollarScreen()
